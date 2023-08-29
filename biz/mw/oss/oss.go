@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"mime/multipart"
-	"net/url"
 	"tiktok_demo/pkg/constants"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
@@ -34,25 +33,41 @@ func CreateBucket(bucketName string) {
 }
 
 func PutToBucket(bucketName string, file *multipart.FileHeader) (err error) {
+    bucket, err := client.Bucket(bucketName)
+    if err != nil {
+        return err
+    }
     fileObj, _ := file.Open()
     defer fileObj.Close()
-    err = client.PutObject(bucketName + file.Filename, fileObj)
+    err = bucket.PutObject(bucketName + file.Filename, fileObj)
     return err
 }
 
 // GetObjURL get the original link of the file in oss
-func GetObjURL(objectName string, expTime int64) (u *url.URL, err error) {
-    u, err = client.signURL(objectName, oss.HTTPGet, expTime)
+func GetObjURL(bucketName, objectName string, expTime int64) (u string, err error) {
+    bucket, err := client.Bucket(bucketName)
+    if err != nil {
+        return "", err
+    }
+    u, err = bucket.SignURL(bucketName + objectName, oss.HTTPGet, expTime)
     return u, err
 }
 
-func PutToBucketByBuf(dst string, buf *bytes.Buffer) (err error) {
-    err = oss.PutObject(dst, buf)
+func PutToBucketByBuf(bucketName, objectName string, buf *bytes.Buffer) (err error) {
+    bucket, err := client.Bucket(bucketName)
+    if err != nil {
+        return err
+    }
+    err = bucket.PutObject(bucketName + objectName, buf)
     return
 }
 
-func PutToBucketByFilePath(dst, src string) (err error) {
-    err = oss.PutObjectFromFile(dst, src)
+func PutToBucketByFilePath(bucketName, filename, filepath string) (err error) {
+    bucket, err := client.Bucket(bucketName)
+    if err != nil {
+        return err
+    }
+    err = bucket.PutObjectFromFile(bucketName + filename, filepath)
     return err
 }
 

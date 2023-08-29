@@ -25,7 +25,7 @@ func NewUserService(ctx context.Context, c *app.RequestContext) *UserService {
 }
 
 // UserRegister register user return user id
-func (s *UserService) UserRegister(req *user.UserRegisterReq) (user_id int64, err error) {
+func (s *UserService) UserRegister(req *user.UserRegisterRequest) (user_id int64, err error) {
     user, err := db.QueryUser(req.Name)
     if err != nil {
         return 0, err
@@ -46,7 +46,7 @@ func (s *UserService) UserRegister(req *user.UserRegisterReq) (user_id int64, er
 }
 
 // UserInfo the function of user api
-func (s *UserService) UserInfo(req *user.UserReq) (*common.User, error) {
+func (s *UserService) UserInfo(req *user.UserRequest) (*common.User, error) {
     query_user_id := req.UserID
     current_user_id, exists := s.c.Get("current_user_id")
     if !exists {

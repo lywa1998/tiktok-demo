@@ -28,7 +28,7 @@ func Init() {
 		IdentityKey: identity,
 		// Verify password at login
 		Authenticator: func(ctx context.Context, c *app.RequestContext) (interface{}, error) {
-			var loginRequest user.UserLoginReq
+			var loginRequest user.UserLoginRequest
 			if err := c.BindAndValidate(&loginRequest); err != nil {
 				return nil, err
 			}
@@ -69,7 +69,7 @@ func Init() {
 		},
 		// Validation failed, build the message
 		Unauthorized: func(ctx context.Context, c *app.RequestContext, code int, message string) {
-			c.JSON(consts.StatusOK, user.UserLoginResp{
+			c.JSON(consts.StatusOK, user.UserLoginResponse{
 				StatusCode: errno.AuthorizationFailedErrCode,
 				StatusMsg:  message,
 			})

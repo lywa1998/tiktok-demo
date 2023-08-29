@@ -19,11 +19,11 @@ import (
 // @router /douyin/user/ [GET]
 func Uer(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req user.UserReq
+	var req user.UserRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		resp := utils.BuildBaseResp(err)
-		c.JSON(consts.StatusOK, user.UserRegisterResp{
+		c.JSON(consts.StatusOK, user.UserRegisterResponse{
 			StatusCode: resp.StatusCode,
 			StatusMsg:  resp.StatusMsg,
 		})
@@ -32,7 +32,7 @@ func Uer(ctx context.Context, c *app.RequestContext) {
 
 	u, err := service.NewUserService(ctx, c).UserInfo(&req)
 	resp := utils.BuildBaseResp(err)
-	c.JSON(consts.StatusOK, user.UserResp{
+	c.JSON(consts.StatusOK, user.UserResponse{
 		StatusCode: resp.StatusCode,
 		StatusMsg:  resp.StatusMsg,
 		User:       u,
@@ -43,11 +43,11 @@ func Uer(ctx context.Context, c *app.RequestContext) {
 // @router /douyin/user/register/ [POST]
 func UserRegister(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req user.UserRegisterReq
+	var req user.UserRegisterRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		resp := utils.BuildBaseResp(err)
-		c.JSON(consts.StatusOK, user.UserRegisterResp{
+		c.JSON(consts.StatusOK, user.UserRegisterResponse{
 			StatusCode: resp.StatusCode,
 			StatusMsg:  resp.StatusMsg,
 		})
@@ -57,7 +57,7 @@ func UserRegister(ctx context.Context, c *app.RequestContext) {
 	_, err = service.NewUserService(ctx, c).UserRegister(&req)
 	if err != nil {
 		resp := utils.BuildBaseResp(err)
-		c.JSON(consts.StatusOK, user.UserRegisterResp{
+		c.JSON(consts.StatusOK, user.UserRegisterResponse{
 			StatusCode: resp.StatusCode,
 			StatusMsg:  resp.StatusMsg,
 		})
@@ -69,7 +69,7 @@ func UserRegister(ctx context.Context, c *app.RequestContext) {
 	v, _ := c.Get("user_id")
 	user_id := v.(int64)
 
-	c.JSON(consts.StatusOK, user.UserRegisterResp{
+	c.JSON(consts.StatusOK, user.UserRegisterResponse{
 		StatusCode: errno.SuccessCode,
 		StatusMsg:  errno.SuccessMsg,
 		Token:      token,
@@ -83,7 +83,7 @@ func UserLogin(ctx context.Context, c *app.RequestContext) {
 	v, _ := c.Get("user_id")
 	user_id := v.(int64)
 	token := c.GetString("token")
-	c.JSON(consts.StatusOK, user.UserLoginResp{
+	c.JSON(consts.StatusOK, user.UserLoginResponse{
 		StatusCode: errno.SuccessCode,
 		StatusMsg:  errno.SuccessMsg,
 		Token:      token,

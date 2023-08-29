@@ -19,6 +19,8 @@ package utils
 import (
 	"context"
 	"fmt"
+	"net/url"
+	"strings"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
@@ -36,7 +38,13 @@ func URLconvert(ctx context.Context, c *app.RequestContext, path string) (fullUR
 	if len(path) == 0 {
 		return ""
 	}
-	u, err := oss.GetObjURL(path, 360)
+    arr := strings.Split(path, "/")
+	rawURL, err := oss.GetObjURL(arr[0], arr[1], 360)
+    if err != nil {
+        hlog.CtxInfof(ctx, err.Error())
+        return ""
+    }
+    u, err := url.Parse(rawURL)
 	if err != nil {
 		hlog.CtxInfof(ctx, err.Error())
 		return ""
