@@ -19,7 +19,7 @@ package utils
 import (
 	"errors"
 
-	"github.com/cloudwego/hertz-examples/bizdemo/tiktok_demo/pkg/errno"
+	"tiktok_demo/pkg/errno"
 )
 
 type BaseResp struct {

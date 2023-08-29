@@ -1,4 +1,7 @@
 #!/bin/sh
+export GOPATH=~/go
+export PATH="$PATH:$GOPATH/bin"
+
 if [ "$1" = "init" ]; then
     hz new -mod tiktok_demo
 fi

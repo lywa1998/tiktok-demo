@@ -19,12 +19,11 @@ package utils
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 
-	"github.com/cloudwego/hertz-examples/bizdemo/tiktok_demo/biz/mw/minio"
+	"tiktok_demo/biz/mw/oss"
 )
 
 // NewFileName Splicing user_id and time to make unique filename
@@ -37,8 +36,7 @@ func URLconvert(ctx context.Context, c *app.RequestContext, path string) (fullUR
 	if len(path) == 0 {
 		return ""
 	}
-	arr := strings.Split(path, "/")
-	u, err := minio.GetObjURL(ctx, arr[0], arr[1])
+	u, err := oss.GetObjURL(path, 360)
 	if err != nil {
 		hlog.CtxInfof(ctx, err.Error())
 		return ""

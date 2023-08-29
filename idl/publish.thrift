@@ -4,7 +4,7 @@ include 'common.thrift'
 
 struct PublishActionRequest {
     1: string token
-    2: byte data
+    2: binary data
     3: string title
 }
 

@@ -5,13 +5,14 @@ package publish
 import (
 	"context"
 	"fmt"
+    "mime/multipart"
 	"github.com/apache/thrift/lib/go/thrift"
 	"tiktok_demo/biz/model/common"
 )
 
 type PublishActionRequest struct {
 	Token string `thrift:"token,1" form:"token" json:"token" query:"token"`
-	Data  int8   `thrift:"data,2" form:"data" json:"data" query:"data"`
+	Data  *multipart.FileHeader `thrift:"data,2" form:"data" json:"data" query:"data"`
 	Title string `thrift:"title,3" form:"title" json:"title" query:"title"`
 }
 
@@ -23,7 +24,7 @@ func (p *PublishActionRequest) GetToken() (v string) {
 	return p.Token
 }
 
-func (p *PublishActionRequest) GetData() (v int8) {
+func (p *PublishActionRequest) GetData() (v *multipart.FileHeader) {
 	return p.Data
 }
 
@@ -67,7 +68,7 @@ func (p *PublishActionRequest) Read(iprot thrift.TProtocol) (err error) {
 				}
 			}
 		case 2:
-			if fieldTypeId == thrift.BYTE {
+			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField2(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -126,11 +127,11 @@ func (p *PublishActionRequest) ReadField1(iprot thrift.TProtocol) error {
 }
 
 func (p *PublishActionRequest) ReadField2(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadByte(); err != nil {
-		return err
-	} else {
-		p.Data = v
-	}
+	// if v, err := iprot.ReadBinary(); err != nil {
+	// 	return err
+	// } else {
+	// 	p.Data = &multipart.FileHeader{} 
+	// }
 	return nil
 }
 
@@ -198,20 +199,20 @@ WriteFieldEndError:
 }
 
 func (p *PublishActionRequest) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("data", thrift.BYTE, 2); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteByte(p.Data); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
+	// if err = oprot.WriteFieldBegin("data", thrift.STRING, 2); err != nil {
+	// 	goto WriteFieldBeginError
+	// }
+	// if err := oprot.WriteBinary([]byte(p.Data)); err != nil {
+	// 	return err
+	// }
+	// if err = oprot.WriteFieldEnd(); err != nil {
+	// 	goto WriteFieldEndError
+	// }
 	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+// WriteFieldBeginError:
+// 	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+// WriteFieldEndError:
+// 	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
 
 func (p *PublishActionRequest) writeField3(oprot thrift.TProtocol) (err error) {

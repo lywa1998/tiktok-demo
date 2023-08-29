@@ -14,7 +14,7 @@ struct FavoriteActionResponse {
 }
 
 struct FavoriteListRequest {
-    1: i32      user_id
+    1: i64      user_id
     2: string   token
 }
 
